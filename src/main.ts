@@ -7,9 +7,9 @@ async function bootstrap() {
 
   process.env.TZ = '-03:00';
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe()); // Habilitamos o validation globalmente
 
-  app.enableCors();
+  app.enableCors(); // Habilitamos requisições de outras origens
   await app.listen(4000);
 }
 bootstrap();
