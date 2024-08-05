@@ -1,37 +1,40 @@
-
-import { Transform, TransformFnParams } from "class-transformer";
+import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty } from "class-validator";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Tema } from "../../tema/entities/tema.entity";
-import { Usuario } from "../../usuario/entities/usuario.entity";
-
+import { Usuario } from './../../usuario/entities/usuario.entity';
 
 @Entity({name: "tb_postagens"})
-export class Postagem{
+export class Postagem {
 
-    @PrimaryGeneratedColumn() // Chave Primaria Autoincremental
-    id: number;
+    @ApiProperty()  
+    @PrimaryGeneratedColumn()    
+    id: number
 
-    @Transform(({ value }: TransformFnParams) => value?.trim()) //Bloquear espaços em branco
-    @IsNotEmpty() // Não aceita resultado vazio 
-    @Column({length: 100, nullable: false}) // Definir o tamanho e não aceitar vlor maior que 100
-    titulo: string;
+    @ApiProperty()  
+    @IsNotEmpty()
+    @Column({length: 100, nullable: false})
+    titulo: string
 
+    @ApiProperty()  
     @IsNotEmpty()
     @Column({length: 1000, nullable: false})
-    texto: string;
+    texto: string
 
-    @UpdateDateColumn() // A data e hora sera definida automaticamente 
-    data: Date;
-
-    // Muitas Postagens, possuem um tema (Muitos para um)
+    @ApiProperty()  
+    @UpdateDateColumn()
+    data: Date
+    
+    @ApiProperty({ type: () => Tema })  
     @ManyToOne(() => Tema, (tema) => tema.postagem, {
         onDelete: "CASCADE"
     })
     tema: Tema
 
+    @ApiProperty({ type: () => Usuario })  
     @ManyToOne(() => Usuario, (usuario) => usuario.postagem, {
         onDelete: "CASCADE"
     })
     usuario: Usuario
+
 }
